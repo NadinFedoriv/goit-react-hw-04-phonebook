@@ -1,31 +1,29 @@
-
-import { Component } from 'react';
+import { useState } from 'react';
 import './ContactForm.scss'
 
-export class ContactForm extends Component {
-  state = {
+export function ContactForm({ onSubmit }) {
+  const [state, setState] = useState({
     name: '',
     number: '',
-  };
+});
 
-  handleChange = e => {
+  const handleChange = e => {
     const { name, value } = e.currentTarget;
-    this.setState({ [name]: value });
+    setState(prevState => ({...prevState, [name]: value }));
   };
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit(this.state);
-    this.reset();
+    onSubmit(state);
+    reset();
   };
 
-  reset = () => {
-    this.setState({ name: '', number: '' });
+ const reset = () => {
+    setState({ name: '', number: '' });
   };
 
-  render() {
-    return (
-      <form className="form" onSubmit={this.handleSubmit}>
+      return (
+      <form className="form" onSubmit={handleSubmit}>
         <label className="label">
           Name
           <input
@@ -35,8 +33,8 @@ export class ContactForm extends Component {
             pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
-            onChange={this.handleChange}
-            value={this.state.name}
+            onChange={handleChange}
+            value={state.name}
           />
         </label>
         <label className="label">
@@ -48,8 +46,8 @@ export class ContactForm extends Component {
             pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
-            value={this.state.number}
-            onChange={this.handleChange}
+            value={state.number}
+            onChange={handleChange}
           />
         </label>
         <button className="button" type="submit">
@@ -58,6 +56,5 @@ export class ContactForm extends Component {
       </form>
     );
   }
-}
 
 
